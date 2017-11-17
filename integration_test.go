@@ -258,7 +258,7 @@ func TestClusterJoinThreeToTwo(t *testing.T) {
 	ticker = time.NewTicker(120 * time.Second)
 	defer ticker.Stop()
 L:
-	for {
+	for returns >= 9 {
 		select {
 		case <-ticker.C:
 			t.Fatalf("Timeout waiting on three to join. Waited %d seconds.", 120)
@@ -281,6 +281,7 @@ L:
 			break L
 		}
 	}
+	time.Sleep(time.Second * 3)
 	_, err = one.table.getNode(three.self.ID)
 	if err != nil {
 		t.Logf("Error getting three from one's table")
