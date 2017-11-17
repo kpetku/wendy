@@ -168,12 +168,20 @@ func TestNodeIDIterDigit(t *testing.T) {
 		t.Fatal("unexpected error", err)
 	}
 	for i := 0; i < 16; i++ {
-		if digit := id.Digit(i); digit != byte(i) {
+		iDigit, err := id.Digit(i)
+		if err != nil {
+			t.Errorf("%s", invalidDigitError)
+		}
+		if digit := iDigit; digit != byte(i) {
 			t.Errorf("expected digit %#x, got %#x", i, digit)
 		}
 	}
 	for i := 0; i < 16; i++ {
-		if digit := id.Digit(16 + i); digit != byte(15-i) {
+		iDigit, err := id.Digit(16 + i)
+		if err != nil {
+			t.Errorf("%s", invalidDigitError)
+		}
+		if digit := iDigit; digit != byte(15-i) {
 			t.Errorf("expected digit %#x, got %#x", 15-i, digit)
 		}
 	}

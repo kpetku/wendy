@@ -20,7 +20,10 @@ func TestRoutingTableInsert(t *testing.T) {
 	}
 	other := NewNode(other_id, "127.0.0.2", "127.0.0.2", "testing", 55555)
 	row := self_id.CommonPrefixLen(other_id)
-	col := other_id.Digit(row)
+	col, err := other_id.Digit(row)
+	if err != nil {
+		t.Errorf("%s", invalidDigitError)
+	}
 	t.Logf("%s\n", other_id.String())
 	t.Logf("%v\n", row)
 	t.Logf("%v\n", int(col))

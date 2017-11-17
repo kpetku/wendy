@@ -57,6 +57,7 @@ func (p Passphrase) Marshal() []byte {
 var deadNodeError = errors.New("Node did not respond to heartbeat.")
 var nodeNotFoundError = errors.New("Node not found.")
 var impossibleError = errors.New("This error should never be reached. It's logically impossible.")
+var invalidDigitError = errors.New("Invalid digit index.")
 
 // IdentityError represents an error that was raised when a Node attempted to perform actions on its state tables using its own ID, which is problematic. It is its own type for the purposes of handling the error.
 type IdentityError struct {

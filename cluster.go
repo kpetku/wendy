@@ -827,7 +827,11 @@ func (c *Cluster) repairLeafset(id NodeID) error {
 func (c *Cluster) repairTable(id NodeID) error {
 	row := c.self.ID.CommonPrefixLen(id)
 	reqRow := row
-	col := int(id.Digit(row))
+	iRow, err := id.Digit(row)
+	if err != nil {
+		return invalidDigitError
+	}
+	col := int(iRow)
 	targets := []*Node{}
 	for len(targets) < 1 && row < len(c.table.nodes) {
 		targets = c.table.list([]int{row}, []int{})

@@ -41,7 +41,11 @@ func (t *routingTable) insertValues(id NodeID, localIP, globalIP, region string,
 	if row >= len(t.nodes) {
 		return nil, throwIdentityError("insert", "into", "routing table")
 	}
-	col := int(node.ID.Digit(row))
+	iRow, err := node.ID.Digit(row)
+	if err != nil {
+		return nil, invalidDigitError
+	}
+	col := int(iRow)
 	if col >= len(t.nodes[row]) {
 		return nil, impossibleError
 	}
@@ -76,7 +80,11 @@ func (t *routingTable) getNode(id NodeID) (*Node, error) {
 	if row >= idLen {
 		return nil, throwIdentityError("get", "from", "routing table")
 	}
-	col := int(id.Digit(row))
+	iRow, err := id.Digit(row)
+	if err != nil {
+		return nil, invalidDigitError
+	}
+	col := int(iRow)
 	if col >= len(t.nodes[row]) {
 		return nil, impossibleError
 	}
@@ -97,7 +105,11 @@ func (t *routingTable) route(id NodeID) (*Node, error) {
 	if row >= idLen {
 		return nil, throwIdentityError("route to", "in", "routing table")
 	}
-	col := int(id.Digit(row))
+	iRow, err := id.Digit(row)
+	if err != nil {
+		return nil, invalidDigitError
+	}
+	col := int(iRow)
 	if col >= len(t.nodes[row]) {
 		return nil, impossibleError
 	}
@@ -107,7 +119,11 @@ func (t *routingTable) route(id NodeID) (*Node, error) {
 	diff := t.self.ID.Diff(id)
 	for scan_row := row; scan_row < len(t.nodes); scan_row++ {
 		for c, n := range t.nodes[scan_row] {
-			if c == int(t.self.ID.Digit(row)) {
+			cRow, err := t.self.ID.Digit(row)
+			if err != nil {
+				return nil, invalidDigitError
+			}
+			if c == int(cRow) {
 				continue
 			}
 			if n == nil {
@@ -129,7 +145,11 @@ func (t *routingTable) removeNode(id NodeID) (*Node, error) {
 	if row >= idLen {
 		return nil, throwIdentityError("remove", "from", "routing table")
 	}
-	col := int(id.Digit(row))
+	iRow, err := id.Digit(row)
+	if err != nil {
+		return nil, invalidDigitError
+	}
+	col := int(iRow)
 	if col > len(t.nodes[row]) {
 		return nil, impossibleError
 	}

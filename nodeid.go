@@ -212,9 +212,9 @@ func (id *NodeID) UnmarshalJSON(source []byte) error {
 }
 
 // Digit returns the ith 4-bit digit in the NodeID. If i >= 32, Digit panics.
-func (id NodeID) Digit(i int) byte {
+func (id NodeID) Digit(i int) (byte, error) {
 	if uint(i) >= 32 {
-		panic("invalid digit index")
+		return byte(0), invalidDigitError
 	}
 	n := id[0]
 	if i >= 16 {
@@ -222,5 +222,5 @@ func (id NodeID) Digit(i int) byte {
 		i &= 15
 	}
 	k := 4 * uint(15-i)
-	return byte((n >> k) & 0xf)
+	return byte((n >> k) & 0xf), nil
 }
