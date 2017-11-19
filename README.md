@@ -94,7 +94,7 @@ func (app *WendyApplication) OnDeliver(msg wendy.Message) {
 }
 
 func (app *WendyApplication) OnForward(msg *wendy.Message, next wendy.NodeID) bool {
-	fmt.Printf("Forwarding message %s to Node %s.", msg.ID, next)
+	fmt.Printf("Forwarding message %s to Node %s.", msg.Key, next)
 	return true // return false if you don't want the message forwarded
 }
 
